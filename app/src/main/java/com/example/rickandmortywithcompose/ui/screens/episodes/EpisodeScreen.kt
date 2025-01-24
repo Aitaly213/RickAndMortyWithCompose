@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,55 +19,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.rickandmortywithcompose.data.models.episode.EpisodeModel
+import com.example.rickandmortywithcompose.data.dto.models.episode.EpisodeModel
+import com.example.rickandmortywithcompose.ui.screens.character.CharacterViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun EpisodeScreen(
-    navigate: (name: String, airDate: String, episode: String) -> Unit
+    navigate: (id: Int) -> Unit,
+    episodeViewModel: EpisodeViewModel= koinViewModel<EpisodeViewModel>()
 ) {
 
-    val mockDataEpisodeModels by remember {
-        mutableStateOf(
-            listOf(
-                EpisodeModel(
-                    id = 1,
-                    name = "Pilot",
-                    airDate = "December 2, 2013",
-                    episode = "S01E01",
-                    characters = listOf(
-                        "https://rickandmortyapi.com/api/character/1",
-                        "https://rickandmortyapi.com/api/character/2"
-                    ),
-                    url = "https://rickandmortyapi.com/api/episode/1",
-                    created = "2017-11-10T12:56:33.798Z"
-                ),
-                EpisodeModel(
-                    id = 2,
-                    name = "Lawnmower Dog",
-                    airDate = "December 9, 2013",
-                    episode = "S01E02",
-                    characters = listOf(
-                        "https://rickandmortyapi.com/api/character/1",
-                        "https://rickandmortyapi.com/api/character/3"
-                    ),
-                    url = "https://rickandmortyapi.com/api/episode/2",
-                    created = "2017-11-10T12:56:33.916Z"
-                ),
-                EpisodeModel(
-                    id = 3,
-                    name = "Anatomy Park",
-                    airDate = "December 16, 2013",
-                    episode = "S01E03",
-                    characters = listOf(
-                        "https://rickandmortyapi.com/api/character/1",
-                        "https://rickandmortyapi.com/api/character/4"
-                    ),
-                    url = "https://rickandmortyapi.com/api/episode/3",
-                    created = "2017-11-10T12:56:34.022Z"
-                )
-            )
-        )
-    }
+    val episode by episodeViewModel.episodesState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -77,16 +40,16 @@ fun EpisodeScreen(
                 .fillMaxWidth()
                 .padding(all = 12.dp)
         ) {
-            items(mockDataEpisodeModels.size) { index ->
+            items(episode.size) { index ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(all = 20.dp)
                         .background(Color.DarkGray)
                         .clickable {
-                            navigate( mockDataEpisodeModels[index].name,
-                                 mockDataEpisodeModels[index].airDate,
-                                 mockDataEpisodeModels[index].episode)
+                            navigate(
+                                episode[index].id
+                            )
                         }
 
 
@@ -97,20 +60,20 @@ fun EpisodeScreen(
                     ) {
 
                         Text(
-                            text = mockDataEpisodeModels[index].name,
+                            text = episode[index].name.toString(),
                             fontSize = 20.sp,
                             color = Color.White
                         )
 
                         Row {
                             Text(
-                                text = mockDataEpisodeModels[index].airDate,
+                                text = episode[index].airDate,
                                 fontSize = 20.sp,
                                 color = Color.White
                             )
 
                             Text(
-                                text = " - ${mockDataEpisodeModels[index].episode}",
+                                text = " - ${episode[index].episode}",
                                 fontSize = 20.sp,
                                 color = Color.White
                             )

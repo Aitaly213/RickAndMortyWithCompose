@@ -28,11 +28,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.rickandmortywithcompose.ui.navRoute.NavRoute
 import com.example.rickandmortywithcompose.ui.navRoute.TopLevelRoute
-import com.example.rickandmortywithcompose.ui.screens.character.CharacterDetailScreen
+import com.example.rickandmortywithcompose.ui.screens.character.detail.CharacterDetailScreen
 import com.example.rickandmortywithcompose.ui.screens.character.CharacterScreen
-import com.example.rickandmortywithcompose.ui.screens.episodes.EpisodeDetailScreen
+import com.example.rickandmortywithcompose.ui.screens.episodes.detail.EpisodeDetailScreen
 import com.example.rickandmortywithcompose.ui.screens.episodes.EpisodeScreen
-import com.example.rickandmortywithcompose.ui.screens.location.LocationDetailScreen
+import com.example.rickandmortywithcompose.ui.screens.location.detail.LocationDetailScreen
 import com.example.rickandmortywithcompose.ui.screens.location.LocationScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,10 +55,7 @@ fun MainScreen() {
             val navBackStackEntry = navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry.value?.destination?.route
 
-            Log.e("aitaly", "currentRoute: ${currentRoute.toString()},")
-            Log.e("aitaly", "tt ${topLevelRoutes[0].route.toString()}", )
-
-            TopAppBar(title = {
+          TopAppBar(title = {
 
                     topLevelRoutes.forEach {
                         if (currentRoute.toString() == it.route.toString()) {
@@ -127,11 +124,10 @@ fun NavHostInit(navController: NavHostController) {
     ) {
 
         composable<NavRoute.Character> {
-            CharacterScreen(navigate = { image, name, status, species, gender, location ->
+            CharacterScreen(navigate = { id ->
                 navController.navigate(
                     NavRoute.CharacterDetails(
-                        image = image, name = name, status = status,
-                        species = species, gender = gender, location = location
+                        id = id
                     )
                 )
             }
@@ -142,25 +138,19 @@ fun NavHostInit(navController: NavHostController) {
             val args = it.toRoute<NavRoute.CharacterDetails>()
 
             CharacterDetailScreen(
-                image = args.image,
-                name = args.name,
-                status = args.status,
-                species = args.species,
-                gender = args.gender,
-                location = args.location
+                id = args.id
             )
         }
 
         composable<NavRoute.Episode> {
-            EpisodeScreen(navigate = { name, airDate, episode ->
+            EpisodeScreen(navigate = { id ->
                 navController.navigate(
                     NavRoute.EpisodeDetails(
-                        name = name, airDate = airDate, episode = episode
+                        id =id
                     )
                 )
             }
             )
-
         }
 
 
@@ -168,17 +158,15 @@ fun NavHostInit(navController: NavHostController) {
             val args = it.toRoute<NavRoute.EpisodeDetails>()
 
             EpisodeDetailScreen(
-                name = args.name,
-                airDate = args.airDate,
-                episode = args.episode
+                id = args.id
             )
         }
 
         composable<NavRoute.Location> {
-            LocationScreen(navigate = { name, type, dimension ->
+            LocationScreen(navigate = { id ->
                 navController.navigate(
                     NavRoute.LocationDetails(
-                        name = name, type = type, dimension = dimension
+                        id = id
                     )
                 )
             }
@@ -189,9 +177,7 @@ fun NavHostInit(navController: NavHostController) {
             val args = it.toRoute<NavRoute.LocationDetails>()
 
             LocationDetailScreen(
-                name = args.name,
-                type = args.type,
-                dimension = args.dimension
+                id = args.id
             )
         }
 

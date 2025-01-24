@@ -1,16 +1,16 @@
-package com.example.rickandmortywithcompose.data.models.episode
+package com.example.rickandmortywithcompose.data.dto.models.location
 
 
 import com.google.gson.annotations.SerializedName
 
 
-data class InfoEpisode(
+data class InfoLocation(
     @SerializedName("count")
     val count: Int,
     @SerializedName("pages")
     val pages: Int,
     @SerializedName("next")
-    val next: String,
+    val next: String?=null,
     @SerializedName("prev")
-    val prev: Any
+    val prev: String?=null
 )

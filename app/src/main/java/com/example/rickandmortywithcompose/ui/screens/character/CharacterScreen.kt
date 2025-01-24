@@ -12,100 +12,30 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.example.rickandmortywithcompose.data.models.character.CharacterModel
-import com.example.rickandmortywithcompose.data.models.character.LocationCharacter
-import com.example.rickandmortywithcompose.data.models.character.Origin
+import com.example.rickandmortywithcompose.data.dto.models.character.CharacterModel
+import com.example.rickandmortywithcompose.data.dto.models.character.LocationCharacter
+import com.example.rickandmortywithcompose.data.dto.models.character.Origin
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.component.getScopeName
 
 @Composable
-fun CharacterScreen(navigate: (image: String
-                               , name:String, status:String, species:String,
-                               gender:String, location:String
-        ) -> Unit) {
-
-    val mockDataCharacterModels by remember {
-        mutableStateOf(
-            listOf(
-                CharacterModel(
-                    id = 0,
-                    name = "Rick Sanchez",
-                    status = "Alive",
-                    species = "Human",
-                    type = "",
-                    gender = "Male",
-                    origin = Origin(
-                        name = "Earth",
-                        url = "https://rickandmortyapi.com/api/location/1"
-                    ),
-                    locationCharacter = LocationCharacter(
-                        name = "Earth",
-                        url = "https://rickandmortyapi.com/api/location/20"
-                    ),
-                    image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                    episode = listOf(
-                        "https://rickandmortyapi.com/api/episode/1",
-                        "https://rickandmortyapi.com/api/episode/2"
-                    ),
-                    url = "https://rickandmortyapi.com/api/character/1",
-                    created = "2017-11-04T18:48:46.250Z"
-                ),
-                CharacterModel(
-                    id = 1,
-                    name = "Morty Smith",
-                    status = "Alive",
-                    species = "Human",
-                    type = "",
-                    gender = "Male",
-                    origin = Origin(
-                        name = "Earth",
-                        url = "https://rickandmortyapi.com/api/location/1"
-                    ),
-                    locationCharacter = LocationCharacter(
-                        name = "Earth",
-                        url = "https://rickandmortyapi.com/api/location/20"
-                    ),
-                    image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                    episode = listOf(
-                        "https://rickandmortyapi.com/api/episode/1",
-                        "https://rickandmortyapi.com/api/episode/2"
-                    ),
-                    url = "https://rickandmortyapi.com/api/character/2",
-                    created = "2017-11-04T18:50:21.651Z"
-                ),
-                CharacterModel(
-                    id = 2,
-                    name = "Summer Smith",
-                    status = "Alive",
-                    species = "Human",
-                    type = "",
-                    gender = "Female",
-                    origin = Origin(
-                        name = "Earth",
-                        url = "https://rickandmortyapi.com/api/location/1"
-                    ),
-                    locationCharacter = LocationCharacter(
-                        name = "Earth",
-                        url = "https://rickandmortyapi.com/api/location/20"
-                    ),
-                    image = "https://rickandmortyapi.com/api/character/avatar/3.jpeg",
-                    episode = listOf(
-                        "https://rickandmortyapi.com/api/episode/6",
-                        "https://rickandmortyapi.com/api/episode/7"
-                    ),
-                    url = "https://rickandmortyapi.com/api/character/3",
-                    created = "2017-11-04T19:09:56.428Z"
-                )
-            )
-        )
-    }
+fun CharacterScreen(
+    navigate: (
+        id: Int
+    ) -> Unit,
+    charactersViewModel: CharacterViewModel = koinViewModel<CharacterViewModel>()
+) {
+   val characters by charactersViewModel.charactersState.collectAsState()
 
 
     Column(
@@ -117,7 +47,7 @@ fun CharacterScreen(navigate: (image: String
                 .fillMaxWidth()
                 .padding(all = 12.dp)
         ) {
-            items(mockDataCharacterModels.size) { index ->
+            items(characters.size) { index ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -125,17 +55,12 @@ fun CharacterScreen(navigate: (image: String
                         .background(Color.DarkGray)
                         .clickable {
                             navigate(
-                                mockDataCharacterModels[index].image,
-                                mockDataCharacterModels[index].name,
-                                mockDataCharacterModels[index].status,
-                                mockDataCharacterModels[index].species,
-                                mockDataCharacterModels[index].gender,
-                                mockDataCharacterModels[index].locationCharacter.name
-                                )
+                                characters[index].id
+                            )
                         }
                 ) {
                     AsyncImage(
-                        model = mockDataCharacterModels[index].image,
+                        model = characters[index].image,
                         contentDescription = "",
                         modifier = Modifier
                             .width(100.dp)
@@ -150,20 +75,21 @@ fun CharacterScreen(navigate: (image: String
                     ) {
 
                         Text(
-                            text = mockDataCharacterModels[index].name,
+                            text = characters[index].name,
                             fontSize = 20.sp,
                             color = Color.White
                         )
 
+
                         Row {
                             Text(
-                                text = mockDataCharacterModels[index].status,
+                                text = characters[index].status,
                                 fontSize = 20.sp,
                                 color = Color.White
                             )
 
                             Text(
-                                text = " - ${mockDataCharacterModels[index].species}",
+                                text = " - ${characters[index].species}",
                                 fontSize = 20.sp,
                                 color = Color.White
                             )

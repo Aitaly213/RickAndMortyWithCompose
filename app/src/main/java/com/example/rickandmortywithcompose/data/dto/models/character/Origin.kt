@@ -1,4 +1,4 @@
-package com.example.rickandmortywithcompose.data.models.character
+package com.example.rickandmortywithcompose.data.dto.models.character
 
 
 import com.google.gson.annotations.SerializedName

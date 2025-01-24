@@ -1,4 +1,4 @@
-package com.example.rickandmortywithcompose.data.models.character
+package com.example.rickandmortywithcompose.data.dto.models.character
 
 
 import com.google.gson.annotations.SerializedName
@@ -22,11 +22,5 @@ data class CharacterModel(
     @SerializedName("location")
     val locationCharacter: LocationCharacter,
     @SerializedName("image")
-    val image: String,
-    @SerializedName("episode")
-    val episode: List<String>,
-    @SerializedName("url")
-    val url: String,
-    @SerializedName("created")
-    val created: String
+    val image: String
 )
