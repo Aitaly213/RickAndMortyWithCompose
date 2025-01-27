@@ -99,6 +99,8 @@ dependencies {
     implementation(libs.logging.interceptor)
 
 
+    //Coroutines
+    implementation(libs.kotlinx.coroutines.android)
 
 
 

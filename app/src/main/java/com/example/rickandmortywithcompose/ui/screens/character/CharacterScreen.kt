@@ -48,58 +48,67 @@ fun CharacterScreen(
                 .padding(all = 12.dp)
         ) {
             items(characters.size) { index ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 20.dp)
-                        .background(Color.DarkGray)
-                        .clickable {
-                            navigate(
-                                characters[index].id
-                            )
-                        }
-                ) {
-                    AsyncImage(
-                        model = characters[index].image,
-                        contentDescription = "",
-                        modifier = Modifier
-                            .width(100.dp)
-                            .height(100.dp)
-
-
-                    )
-
-                    Column(
-                        modifier = Modifier
-                            .padding(all = 8.dp)
-                    ) {
-
-                        Text(
-                            text = characters[index].name,
-                            fontSize = 20.sp,
-                            color = Color.White
-                        )
-
-
-                        Row {
-                            Text(
-                                text = characters[index].status,
-                                fontSize = 20.sp,
-                                color = Color.White
-                            )
-
-                            Text(
-                                text = " - ${characters[index].species}",
-                                fontSize = 20.sp,
-                                color = Color.White
-                            )
-                        }
-
-                    }
-
-                }
+                CharacterItem(navigate, characters, index)
             }
         }
+    }
+}
+
+@Composable
+private fun CharacterItem(
+    navigate: (id: Int) -> Unit,
+    characters: List<CharacterModel>,
+    index: Int
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(all = 20.dp)
+            .background(Color.DarkGray)
+            .clickable {
+                navigate(
+                    characters[index].id
+                )
+            }
+    ) {
+        AsyncImage(
+            model = characters[index].image,
+            contentDescription = "",
+            modifier = Modifier
+                .width(100.dp)
+                .height(100.dp)
+
+
+        )
+
+        Column(
+            modifier = Modifier
+                .padding(all = 8.dp)
+        ) {
+
+            Text(
+                text = characters[index].name,
+                fontSize = 20.sp,
+                color = Color.White
+            )
+
+
+            Row {
+                Text(
+                    text = characters[index].status,
+                    fontSize = 20.sp,
+                    color = Color.White
+                )
+
+                Text(
+                    text = " - ${characters[index].species}",
+                    fontSize = 20.sp,
+                    color = Color.White
+                )
+            }
+
+        }
+
     }
 }
 
