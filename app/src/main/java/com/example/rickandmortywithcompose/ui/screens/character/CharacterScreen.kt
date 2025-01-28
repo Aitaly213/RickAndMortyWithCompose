@@ -37,6 +37,9 @@ fun CharacterScreen(
 ) {
    val characters by charactersViewModel.charactersState.collectAsState()
 
+    LaunchedEffect(Unit) {
+        charactersViewModel.fetchAllCharacters()
+    }
 
     Column(
         modifier = Modifier
